@@ -1,0 +1,26 @@
+.locked-row {
+    opacity: 0.6;
+    pointer-events: none;
+    background-color: #f8f9fa;
+}
+
+.lock-icon {
+    animation: lockPulse 2s infinite;
+}
+
+@keyframes lockPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.locked-badge {
+    background-color: #6c757d !important;
+    animation: lockBadgePulse 2s infinite;
+}
+
+@keyframes lockBadgePulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}

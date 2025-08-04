@@ -1,0 +1,22 @@
+.status-change {
+    animation: fadeInOut 0.5s ease-in-out;
+}
+
+.badge-transition {
+    transition: all 0.3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0.5; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.row-highlight {
+    animation: highlightRow 1s ease-in-out;
+}
+
+@keyframes highlightRow {
+    0% { background-color: rgba(255, 255, 0, 0.2); }
+    100% { background-color: transparent; }
+}

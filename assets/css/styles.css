@@ -1,0 +1,292 @@
+/* Main Styles for Circulation Permits System */
+
+body {
+    background-color: #f8f9fa;
+    overflow-x: hidden;
+    max-width: 100vw;
+    font-size: 16px; /* Increased base font size */
+}
+
+.container {
+    max-width: 1400px !important;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Table styles */
+.table {
+    margin: 2rem 0;
+    border-spacing: 0 0.5rem;
+    border-collapse: separate;
+}
+
+.table th {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+/* Column widths */
+.table .col-id { width: 5%; }
+.table .col-patente { width: 10%; }
+.table .col-rut { width: 15%; }
+.table .col-nombre { width: 25%; }
+.table .col-estado { width: 15%; }
+.table .col-fecha { width: 15%; }
+.table .col-acciones { width: 15%; }
+
+/* Status badges */
+.badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.badge i {
+    font-size: 1rem;
+}
+
+/* Action buttons */
+.btn-detalles {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.95rem;
+    margin: 0.25rem;
+    min-width: 130px;
+}
+
+#permit-details {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.card-header {
+    font-weight: 500;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Animation for content transitions */
+#main-content, #permit-details {
+    transition: opacity 0.3s ease-in-out;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden; /* Prevenir expansión */
+}
+
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.loading {
+    opacity: 0.6;
+}
+
+/* Document list styling */
+.list-group-item {
+    transition: background-color 0.2s;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Form styling */
+form .btn {
+    transition: all 0.2s;
+}
+
+/* Modal styling */
+.modal-content {
+    max-width: 100%;
+}
+
+.modal-body {
+    overflow-x: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem;
+    }
+    .table {
+        font-size: 0.9rem;
+    }
+}
+/* Agregar al final del archivo */
+.btn-secondary[disabled] {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+.btn-secondary[disabled] i {
+    margin-right: 5px;
+}
+.locked-indicator {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+}
+/* Animaciones para los cambios de estado de bloqueo */
+/* Animación para cambio de estado */
+@keyframes statusChangeAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+.status-change-animation {
+    animation: statusChangeAnimation 0.7s ease;
+}
+/* Animaciones existentes para bloqueo/desbloqueo */
+@keyframes lockAnimation {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+@keyframes unlockAnimation {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+.lock-animation {
+    animation: lockAnimation 0.5s ease-in-out;
+}
+.unlock-animation {
+    animation: unlockAnimation 0.5s ease-in-out;
+}
+/* Estilo para el icono de bloqueo */
+.btn-secondary i {
+    margin-right: 5px;
+}
+/* Transición suave para todos los botones */
+.btn {
+    transition: all 0.3s ease;
+}
+/* Estilo mejorado para el logo de la barra de navegación */
+.navbar-logo {
+  width: 240px;
+  height: auto;
+  margin-bottom: -25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -40px;
+}
+
+/* Ajuste responsivo para el logo */
+@media (max-width: 768px) {
+    .navbar-logo {
+        height: 60px; /* Aumentado proporcionalmente para móviles */
+    }
+}
+
+/* Estilos para la tabla y visualizaciones */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+}
+
+.action-cell {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.visualizacion-badge {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 0.8rem;
+    vertical-align: middle;
+}
+
+.visualizacion-badge.active {
+    color: #ff5722;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+.btn-info.multiple-viewers {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+/* Add these responsive styles to improve mobile and half-screen views */
+@media (max-width: 992px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    .table th, 
+    .table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn-sm {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+    }
+    
+    .badge {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .action-cell .btn {
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+}

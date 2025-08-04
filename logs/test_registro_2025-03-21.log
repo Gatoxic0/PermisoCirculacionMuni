@@ -1,0 +1,2 @@
+[2025-03-21 13:56:42] Usuario de prueba creado con ID: 31
+[2025-03-21 13:56:42] Error al crear registro de prueba: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tipo_vehiculo' in 'field list'

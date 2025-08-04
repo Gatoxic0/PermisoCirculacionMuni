@@ -1,0 +1,30 @@
+# Habilitar el motor de reescritura
+RewriteEngine On
+RewriteBase /formulario/
+
+# Configuración de PHP para mostrar errores
+<IfModule mod_php8.c>
+    php_flag display_errors On
+    php_value error_reporting E_ALL
+</IfModule>
+
+# Redirigir la raíz del directorio a login.php si no hay sesión activa
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^$ login.php [L]
+
+# Permitir acceso directo a archivos y carpetas existentes
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Prevenir acceso directo a archivos .php en includes/
+RewriteRule ^includes/.*\.php$ - [F,L]
+
+# Configuración de directorio
+<IfModule mod_dir.c>
+    DirectoryIndex index.php login.php
+</IfModule>
+
+# Configuración de codificación
+AddDefaultCharset UTF-8
