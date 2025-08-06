@@ -156,10 +156,22 @@ try {
         .navbar {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             padding: 1rem 0;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 4px 20px rgba(15, 7, 88, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 100;
+            position: relative;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.05"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.05"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
         }
 
         .navbar-container {
@@ -169,6 +181,8 @@ try {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .navbar-brand {
@@ -190,25 +204,141 @@ try {
             gap: 1rem;
         }
 
-        .btn-logout {
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-dropdown-btn {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.75rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
             color: white;
-            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: var(--border-radius);
             font-weight: 500;
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            min-width: 177px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 150px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .btn-logout:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            transform: translateY(-1px);
+        .user-dropdown-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .user-dropdown-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 4px 20px rgba(0, 0, 0, 0.1);
+            min-width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+        }
+
+        .user-dropdown.active .user-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .dropdown-user-info {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .dropdown-user-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .dropdown-user-email {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-user-email::before {
+            content: '📧';
+            font-size: 0.8rem;
+        }
+
+        .dropdown-user-role {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .dropdown-user-role::before {
+            content: '👤';
+            font-size: 0.8rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 0 16px 16px;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            transform: translateX(4px);
+            box-shadow: inset 2px 0 0 var(--primary-color);
+        }
+
+        .dropdown-item i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
         }
 
         /* Main Container */
@@ -219,7 +349,7 @@ try {
         }
 
         .page-header {
-            margin-bottom: 2rem;
+            margin-bottom: 0.8rem;
         }
 
         .page-title {
@@ -443,6 +573,67 @@ try {
             background: var(--secondary-color);
         }
 
+        .clickable-row {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .clickable-row:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .clickable-row:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .clickable-row::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .clickable-row:hover::after {
+            opacity: 1;
+        }
+
+        .last-update-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row-indicator {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .clickable-row:hover .row-indicator {
+            opacity: 1;
+            color: var(--primary-color);
+            transform: translateY(-50%) translateX(4px);
+        }
+
+        .applicant-name {
+            line-height: 1.2;
+        }
+
+
+
         .permits-table tr:last-child td:first-child {
             border-bottom-left-radius: var(--border-radius);
         }
@@ -481,27 +672,7 @@ try {
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        /* Action Button */
-        .btn-details {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.25rem;
-            background: var(--accent-color);
-            color: white;
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
 
-        .btn-details:hover {
-            background: #2563eb;
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
 
         /* Time Display */
         .time-info {
@@ -523,6 +694,8 @@ try {
             opacity: 0.5;
         }
 
+
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .main-container {
@@ -542,6 +715,24 @@ try {
             .filter-buttons {
                 flex-wrap: wrap;
             }
+
+            /* Optimizar tabla para pantallas medianas */
+            .permits-table th,
+            .permits-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+            
+            .status-badge {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            
+            .time-info {
+                font-size: 0.8rem;
+            }
+
+
         }
 
         @media (max-width: 768px) {
@@ -566,6 +757,27 @@ try {
 
             .navbar-logo {
                 width: 120px;
+            }
+
+            .user-info {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .user-name {
+                font-size: 0.85rem;
+                text-align: right;
+            }
+
+            .user-dropdown-btn {
+                min-width: 120px;
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .user-dropdown-menu {
+                min-width: 250px;
             }
         }
         @media (max-width: 705px) {
@@ -602,6 +814,27 @@ try {
             button.filter-btn {
                 width: 100%;
             }
+
+            .user-info {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.6rem;
+            }
+
+            .user-name {
+                font-size: 0.8rem;
+                text-align: right;
+            }
+
+            .user-dropdown-btn {
+                min-width: 100px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .user-dropdown-menu {
+                min-width: 220px;
+            }
         }
         
         /* Mejoras de responsividad para la tabla */
@@ -625,55 +858,103 @@ try {
         
         @media (max-width: 768px) {
             .table-container {
-                padding: 1rem;
+                padding: 0.5rem;
                 overflow-x: auto;
             }
             
             .permits-table {
-                min-width: 800px; /* Asegura que la tabla mantenga su estructura */
-            }
-            
-            .permits-table th,
-            .permits-table td {
-                padding: 0.6rem 0.4rem;
-                font-size: 0.8rem;
-                white-space: nowrap;
-            }
-            
-            .status-badge {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.75rem;
-            }
-            
-            .btn-details {
-                padding: 0.5rem 0.8rem;
-                font-size: 0.8rem;
-            }
-            
-            .time-info {
-                font-size: 0.75rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .table-container {
-                padding: 0.5rem;
+                min-width: 700px; /* Reducido para mejor ajuste */
             }
             
             .permits-table th,
             .permits-table td {
                 padding: 0.5rem 0.3rem;
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
             
             .status-badge {
                 padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .time-info {
+                font-size: 0.75rem;
+            }
+
+            /* Optimizar columnas específicas */
+            .permits-table th:nth-child(1), /* ID */
+            .permits-table td:nth-child(1) {
+                min-width: 50px;
+                max-width: 60px;
+            }
+
+            .permits-table th:nth-child(2), /* Patente */
+            .permits-table td:nth-child(2) {
+                min-width: 80px;
+                max-width: 100px;
+            }
+
+            .permits-table th:nth-child(3), /* RUT */
+            .permits-table td:nth-child(3) {
+                min-width: 120px;
+                max-width: 140px;
+            }
+
+            .permits-table th:nth-child(4), /* Solicitante */
+            .permits-table td:nth-child(4) {
+                min-width: 100px;
+                max-width: 120px;
+            }
+
+            .applicant-name {
+                font-size: 0.75rem;
+                line-height: 1.1;
+                word-wrap: break-word;
+                word-break: break-all;
+                white-space: normal;
+            }
+
+            .permits-table th:nth-child(5), /* Estado */
+            .permits-table td:nth-child(5) {
+                min-width: 100px;
+                max-width: 120px;
+            }
+
+            .permits-table th:nth-child(6), /* Fecha Solicitud */
+            .permits-table td:nth-child(6) {
+                min-width: 100px;
+                max-width: 120px;
+            }
+
+            .permits-table th:nth-child(7), /* Última Actualización */
+            .permits-table td:nth-child(7) {
+                min-width: 120px;
+                max-width: 140px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .table-container {
+                padding: 0.25rem;
+            }
+            
+            .permits-table {
+                min-width: 600px; /* Aún más compacto */
+            }
+            
+            .permits-table th,
+            .permits-table td {
+                padding: 0.4rem 0.2rem;
                 font-size: 0.7rem;
             }
             
-            .btn-details {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
+            .status-badge {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.65rem;
+            }
+            
+            .time-info {
+                font-size: 0.65rem;
             }
             
             .page-title {
@@ -682,6 +963,74 @@ try {
             
             .page-subtitle {
                 font-size: 1rem;
+            }
+
+            .user-info {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.3rem;
+            }
+
+            .user-name {
+                font-size: 0.75rem;
+                text-align: right;
+            }
+
+            .user-dropdown-btn {
+                min-width: 90px;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            /* Optimizar aún más las columnas */
+            .permits-table th:nth-child(1), /* ID */
+            .permits-table td:nth-child(1) {
+                min-width: 40px;
+                max-width: 50px;
+            }
+
+            .permits-table th:nth-child(2), /* Patente */
+            .permits-table td:nth-child(2) {
+                min-width: 70px;
+                max-width: 85px;
+            }
+
+            .permits-table th:nth-child(3), /* RUT */
+            .permits-table td:nth-child(3) {
+                min-width: 100px;
+                max-width: 120px;
+            }
+
+            .permits-table th:nth-child(4), /* Solicitante */
+            .permits-table td:nth-child(4) {
+                min-width: 90px;
+                max-width: 110px;
+            }
+
+            .applicant-name {
+                font-size: 0.7rem;
+                line-height: 1.1;
+                word-wrap: break-word;
+                word-break: break-all;
+                white-space: normal;
+            }
+
+            .permits-table th:nth-child(5), /* Estado */
+            .permits-table td:nth-child(5) {
+                min-width: 80px;
+                max-width: 100px;
+            }
+
+            .permits-table th:nth-child(6), /* Fecha Solicitud */
+            .permits-table td:nth-child(6) {
+                min-width: 80px;
+                max-width: 100px;
+            }
+
+            .permits-table th:nth-child(7), /* Última Actualización */
+            .permits-table td:nth-child(7) {
+                min-width: 100px;
+                max-width: 120px;
             }
         }
     </style>
@@ -694,10 +1043,27 @@ try {
                 <img src="imagenes/logo_blanco.png" alt="Logo Melipilla" class="navbar-logo">
             </a>
             <div class="navbar-actions">
-                <a href="cerrar_sesion.php" class="btn-logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Cerrar sesión
-                </a>
+                <div class="user-info">
+                    <div class="user-name"><?php echo $_SESSION['usuario_nombre']; ?></div>
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-btn">
+                            <i class="fas fa-user"></i>
+                            <span><?php echo ucfirst(strtolower($_SESSION['usuario_rol'])); ?></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown-menu">
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-user-name"><?php echo $_SESSION['usuario_nombre']; ?></div>
+                                <div class="dropdown-user-email"><?php echo $_SESSION['usuario_email']; ?></div>
+                                <div class="dropdown-user-role"><?php echo $_SESSION['usuario_rol']; ?></div>
+                            </div>
+                            <a href="cerrar_sesion.php" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Cerrar sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -707,7 +1073,6 @@ try {
         <!-- Page Header -->
         <div class="page-header">
             <h1 class="page-title">Panel de Administración</h1>
-            <p class="page-subtitle">Gestión de permisos de circulación</p>
         </div>
         
         <!-- Status Messages -->
@@ -778,12 +1143,24 @@ try {
 
             <!-- Table Container -->
             <div class="table-container">
-                <?php if (empty($permits)): ?>
-                <div class="empty-state">
-                    <i class="fas fa-inbox"></i>
-                    <h3>No hay permisos registrados</h3>
-                    <p>Cuando se registren nuevas solicitudes aparecerán aquí.</p>
-                </div>
+                <?php 
+                // Verificar si hay filtros aplicados
+                $hasFilters = !empty($filtroEstado) || !empty($busqueda);
+                
+                if (empty($permits)): 
+                    if ($hasFilters): ?>
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <h3>No se encontraron coincidencias</h3>
+                            <p>No hay permisos que coincidan con los criterios de búsqueda aplicados.</p>
+                        </div>
+                    <?php else: ?>
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h3>No hay permisos registrados</h3>
+                            <p>Cuando se registren nuevas solicitudes aparecerán aquí.</p>
+                        </div>
+                    <?php endif; ?>
                 <?php else: ?>
                 <table class="permits-table">
                     <thead>
@@ -795,19 +1172,18 @@ try {
                             <th>Estado</th>
                             <th>Fecha Solicitud</th>
                             <th>Última Actualización</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($permits as $permit): ?>
-                            <tr data-id="<?php echo $permit['vehiculo_id']; ?>">
+                            <tr data-id="<?php echo $permit['vehiculo_id']; ?>" class="clickable-row" onclick="window.location.href='ver_detalles.php?id=<?php echo $permit['vehiculo_id']; ?>'">
                                 <td><strong>#<?php echo $permit['vehiculo_id']; ?></strong></td>
                                 <td>
                                     <strong><?php echo $permit['placa_patente']; ?></strong>
                                 </td>
                                 <td><?php echo $permit['rut']; ?></td>
                                 <td>
-                                    <div>
+                                    <div class="applicant-name">
                                         <strong><?php echo $permit['nombre'] . ' ' . $permit['apellido_paterno'] . ' ' . $permit['apellido_materno']; ?></strong>
                                     </div>
                                 </td>
@@ -834,48 +1210,44 @@ try {
                                     <div class="time-info"><?php echo date('H:i', strtotime($permit['fecha_solicitud'])); ?></div>
                                 </td>
                                 <td>
-                                    <?php if (!empty($permit['fecha_actualizacion']) && $permit['fecha_actualizacion'] != $permit['fecha_solicitud']): ?>
-                                        <div><?php echo date('d/m/Y', strtotime($permit['fecha_actualizacion'])); ?></div>
-                                        <div class="time-info">
-                                            <?php echo date('H:i', strtotime($permit['fecha_actualizacion'])); ?>
-                                            <?php 
-                                                // Calcular tiempo transcurrido
-                                                $fecha1 = new DateTime($permit['fecha_solicitud']);
-                                                $fecha2 = new DateTime($permit['fecha_actualizacion']);
-                                                $intervalo = $fecha1->diff($fecha2);
-                                                
-                                                if ($intervalo->days > 0) {
-                                                    echo '<br><small>(' . $intervalo->days . ' días)</small>';
-                                                } else {
-                                                    $minutos_totales = ($intervalo->h * 60) + $intervalo->i;
+                                    <div class="last-update-content">
+                                        <?php if (!empty($permit['fecha_actualizacion']) && $permit['fecha_actualizacion'] != $permit['fecha_solicitud']): ?>
+                                            <div><?php echo date('d/m/Y', strtotime($permit['fecha_actualizacion'])); ?></div>
+                                            <div class="time-info">
+                                                <?php echo date('H:i', strtotime($permit['fecha_actualizacion'])); ?>
+                                                <?php 
+                                                    // Calcular tiempo transcurrido
+                                                    $fecha1 = new DateTime($permit['fecha_solicitud']);
+                                                    $fecha2 = new DateTime($permit['fecha_actualizacion']);
+                                                    $intervalo = $fecha1->diff($fecha2);
                                                     
-                                                    if ($minutos_totales >= 60) {
-                                                        $horas = floor($minutos_totales / 60);
-                                                        $minutos = $minutos_totales % 60;
-                                                        
-                                                        if ($minutos > 0) {
-                                                            echo '<br><small>(' . $horas . 'h ' . $minutos . 'm)</small>';
-                                                        } else {
-                                                            echo '<br><small>(' . $horas . 'h)</small>';
-                                                        }
+                                                    if ($intervalo->days > 0) {
+                                                        echo '<br><small>(' . $intervalo->days . ' días)</small>';
                                                     } else {
-                                                        echo '<br><small>(' . $minutos_totales . 'm)</small>';
+                                                        $minutos_totales = ($intervalo->h * 60) + $intervalo->i;
+                                                        
+                                                        if ($minutos_totales >= 60) {
+                                                            $horas = floor($minutos_totales / 60);
+                                                            $minutos = $minutos_totales % 60;
+                                                            
+                                                            if ($minutos > 0) {
+                                                                echo '<br><small>(' . $horas . 'h ' . $minutos . 'm)</small>';
+                                                            } else {
+                                                                echo '<br><small>(' . $horas . 'h)</small>';
+                                                            }
+                                                        } else {
+                                                            echo '<br><small>(' . $minutos_totales . 'm)</small>';
+                                                        }
                                                     }
-                                                }
-                                            ?>
-                                        </div>
-                                    <?php else: ?>
-                                        <span class="time-info">Sin actualizar</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if (!empty($permit['vehiculo_id'])): ?>
-                                        <a href="ver_detalles.php?id=<?php echo $permit['vehiculo_id']; ?>" class="btn-details">
-                                            <i class="fas fa-eye"></i>
-                                            Ver Detalles
-                                            <span class="visualizacion-badge" id="visualizacion-<?php echo $permit['vehiculo_id']; ?>"></span>
-                                        </a>
-                                    <?php endif; ?>
+                                                ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <span class="time-info">Sin actualizar</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="row-indicator">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -897,9 +1269,22 @@ try {
         let currentFilter = '<?php echo isset($_GET["estado"]) ? $_GET["estado"] : ""; ?>';
         let searchTerm = '<?php echo isset($_GET["busqueda"]) ? htmlspecialchars($_GET["busqueda"]) : ""; ?>';
         
+        // Si hay filtros aplicados desde el servidor, actualizar la UI
+        if (currentFilter) {
+            const filterButton = document.querySelector(`[data-filter="${currentFilter}"]`);
+            if (filterButton) {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active', 'warning', 'success', 'danger'));
+                filterButton.classList.add('active');
+                if (currentFilter === 'pendiente') filterButton.classList.add('warning');
+                else if (currentFilter === 'aprobada') filterButton.classList.add('success');
+                else if (currentFilter === 'rechazada') filterButton.classList.add('danger');
+            }
+        }
+        
         // Función para aplicar filtros
         function applyFilters() {
             const rows = document.querySelectorAll('tbody tr');
+            let visibleRows = 0;
             
             rows.forEach(row => {
                 let showRow = true;
@@ -929,8 +1314,40 @@ try {
                 
                 // Mostrar u ocultar fila
                 row.style.display = showRow ? '' : 'none';
+                if (showRow) visibleRows++;
             });
+            
+            // Mostrar mensaje si no hay coincidencias
+            showNoResultsMessage(visibleRows === 0);
         }
+        
+        // Función para mostrar mensaje de no resultados
+        function showNoResultsMessage(show) {
+            let noResultsDiv = document.getElementById('no-results-message');
+            
+            if (show) {
+                if (!noResultsDiv) {
+                    noResultsDiv = document.createElement('div');
+                    noResultsDiv.id = 'no-results-message';
+                    noResultsDiv.className = 'empty-state';
+                    noResultsDiv.innerHTML = `
+                        <i class="fas fa-search"></i>
+                        <h3>No se encontraron coincidencias</h3>
+                        <p>No hay permisos que coincidan con los criterios de búsqueda aplicados.</p>
+                    `;
+                    
+                    const tableContainer = document.querySelector('.table-container');
+                    tableContainer.appendChild(noResultsDiv);
+                }
+                noResultsDiv.style.display = 'block';
+            } else {
+                if (noResultsDiv) {
+                    noResultsDiv.style.display = 'none';
+                }
+            }
+        }
+        
+
         
         // Manejar búsqueda en tiempo real
         const searchInput = document.getElementById('searchInput');
@@ -981,6 +1398,40 @@ try {
                 }, 300);
             }, 5000);
         });
+
+        // User dropdown functionality
+        const userDropdown = document.querySelector('.user-dropdown');
+        const userDropdownBtn = document.querySelector('.user-dropdown-btn');
+        const userName = document.querySelector('.user-name');
+
+        if (userDropdownBtn) {
+            userDropdownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userDropdown.classList.toggle('active');
+                
+                // Ocultar/mostrar el nombre del usuario
+                if (userName) {
+                    if (userDropdown.classList.contains('active')) {
+                        userName.style.opacity = '0';
+                        userName.style.transform = 'translateX(-10px)';
+                    } else {
+                        userName.style.opacity = '1';
+                        userName.style.transform = 'translateX(0)';
+                    }
+                }
+            });
+
+            // Cerrar dropdown al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!userDropdown.contains(e.target)) {
+                    userDropdown.classList.remove('active');
+                    if (userName) {
+                        userName.style.opacity = '1';
+                        userName.style.transform = 'translateX(0)';
+                    }
+                }
+            });
+        }
     });
     </script>
 </body>
