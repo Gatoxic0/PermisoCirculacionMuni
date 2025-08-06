@@ -1,5 +1,6 @@
 <?php
 require_once 'config/config.php';
+require_once 'includes/mail_sender.php';
 $mensaje = '';
 
 // Solo mostrar mensajes si viene de un POST
@@ -532,9 +533,117 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: var(--text-secondary);
         }
 
+        .file-status {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+        }
+
         .file-status.selected {
             color: var(--success-color);
             font-weight: 500;
+        }
+
+        .file-remove {
+            background: none;
+            color: var(--error-color);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: var(--transition);
+            margin-left: 0.5rem;
+        }
+
+        .file-remove:hover {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Barra de progreso de archivos */
+        .file-progress-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--background-light);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .file-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-progress-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .file-progress-percentage {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .file-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .file-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), #059669);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .file-progress-fill.warning {
+            background: linear-gradient(90deg, var(--warning-color), #d97706);
+        }
+
+        .file-progress-fill.danger {
+            background: linear-gradient(90deg, var(--error-color), #dc2626);
+        }
+
+        /* Estilos para alertas */
+        .alert {
+            margin: 1rem 0;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideIn 0.5s ease-out;
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #991b1b;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1e40af;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Navigation Buttons */
@@ -745,6 +854,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 1rem;
         }
 
+        .modal-icon.error {
+            color: var(--error-color);
+        }
+
         .modal-close {
             position: absolute;
             top: 1rem;
@@ -885,7 +998,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     Seleccionar archivo
                                 </button>
                             </div>
-                            <div class="file-status">No se ha seleccionado ningún archivo</div>
+                            <div class="file-status">
+                                <span class="file-name">No se ha seleccionado ningún archivo</span>
+                                <button type="button" class="file-remove" style="display: none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="file-upload-item">
@@ -899,7 +1017,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     Seleccionar archivo
                                 </button>
                             </div>
-                            <div class="file-status">No se ha seleccionado ningún archivo</div>
+                            <div class="file-status">
+                                <span class="file-name">No se ha seleccionado ningún archivo</span>
+                                <button type="button" class="file-remove" style="display: none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="file-upload-item">
@@ -913,7 +1036,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     Seleccionar archivo
                                 </button>
                             </div>
-                            <div class="file-status">No se ha seleccionado ningún archivo</div>
+                            <div class="file-status">
+                                <span class="file-name">No se ha seleccionado ningún archivo</span>
+                                <button type="button" class="file-remove" style="display: none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="file-upload-item">
@@ -927,7 +1055,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     Seleccionar archivo
                                 </button>
                             </div>
-                            <div class="file-status">No se ha seleccionado ningún archivo</div>
+                            <div class="file-status">
+                                <span class="file-name">No se ha seleccionado ningún archivo</span>
+                                <button type="button" class="file-remove" style="display: none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="file-upload-item">
@@ -941,7 +1074,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     Seleccionar archivo
                                 </button>
                             </div>
-                            <div class="file-status">No se ha seleccionado ningún archivo</div>
+                            <div class="file-status">
+                                <span class="file-name">No se ha seleccionado ningún archivo</span>
+                                <button type="button" class="file-remove" style="display: none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Barra de progreso de archivos -->
+                        <div class="file-progress-container">
+                            <div class="file-progress-header">
+                                <span class="file-progress-text">Espacio utilizado: <span id="usedSpace">0</span>MB / 5MB</span>
+                                <span class="file-progress-percentage" id="progressPercentage">0%</span>
+                            </div>
+                            <div class="file-progress-bar">
+                                <div class="file-progress-fill" id="progressFill"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -969,13 +1118,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Success Modal -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-content">
-            <button class="modal-close" id="modalClose">&times;</button>
             <div class="modal-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
             <h3>¡Formulario enviado exitosamente!</h3>
             <p>Su solicitud ha sido recibida y está en proceso de revisión.</p>
             <p>En las próximas horas o días recibirá un correo electrónico con la respuesta a su solicitud.</p>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal-overlay" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-icon error">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Archivo demasiado grande</h3>
+            <p id="errorModalMessage">Ha ocurrido un error al procesar su solicitud.</p>
         </div>
     </div>
 
@@ -1100,27 +1259,135 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         });
 
+        // Variables globales para el manejo de archivos
+        let totalFileSize = 0;
+        const MAX_TOTAL_SIZE = 5 * 1024 * 1024; // 5MB en bytes
+        const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB en bytes
+        const fileData = new Map(); // Almacena información de cada archivo
+
+        // Función para mostrar modal de error
+        function showErrorModal(message) {
+            const errorModal = document.getElementById('errorModal');
+            const errorMessage = document.getElementById('errorModalMessage');
+            
+            errorMessage.textContent = message;
+            errorModal.style.display = 'flex';
+        }
+
+        // Evento para cerrar modal al hacer clic en cualquier parte
+        document.getElementById('errorModal').addEventListener('click', function(e) {
+            this.style.display = 'none';
+        });
+
+        // Función para actualizar la barra de progreso
+        function updateProgressBar() {
+            const usedSpaceMB = (totalFileSize / (1024 * 1024)).toFixed(2);
+            const percentage = Math.min((totalFileSize / MAX_TOTAL_SIZE) * 100, 100);
+            
+            document.getElementById('usedSpace').textContent = usedSpaceMB;
+            document.getElementById('progressPercentage').textContent = `${percentage.toFixed(1)}%`;
+            
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = `${percentage}%`;
+            
+            // Cambiar color según el porcentaje
+            progressFill.classList.remove('warning', 'danger');
+            if (percentage >= 80) {
+                progressFill.classList.add('danger');
+            } else if (percentage >= 60) {
+                progressFill.classList.add('warning');
+            }
+        }
+
+        // Función para eliminar archivo
+        function removeFile(input) {
+            const fileItem = input.closest('.file-upload-item');
+            const button = fileItem.querySelector('.file-button');
+            const status = fileItem.querySelector('.file-status');
+            const fileName = fileItem.querySelector('.file-name');
+            const removeBtn = fileItem.querySelector('.file-remove');
+            
+            // Restar el tamaño del archivo del total
+            const fileInfo = fileData.get(input.name);
+            if (fileInfo) {
+                totalFileSize -= fileInfo.size;
+                fileData.delete(input.name);
+            }
+            
+            // Resetear el input
+            input.value = '';
+            
+            // Actualizar UI
+            fileName.textContent = 'No se ha seleccionado ningún archivo';
+            status.classList.remove('selected');
+            button.innerHTML = '<i class="fas fa-upload"></i> Seleccionar archivo';
+            button.style.background = 'var(--primary-color)';
+            removeBtn.style.display = 'none';
+            
+            // Actualizar barra de progreso
+            updateProgressBar();
+        }
+
         // File upload handling
         document.querySelectorAll('.file-input').forEach(input => {
             const button = input.parentElement.querySelector('.file-button');
             const status = input.parentElement.parentElement.querySelector('.file-status');
+            const fileName = status.querySelector('.file-name');
+            const removeBtn = status.querySelector('.file-remove');
 
             button.addEventListener('click', () => {
                 input.click();
             });
 
+            // Evento para eliminar archivo
+            removeBtn.addEventListener('click', () => {
+                removeFile(input);
+            });
+
             input.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    const fileName = this.files[0].name;
-                    status.textContent = fileName;
+                    const file = this.files[0];
+                    const fileSize = file.size;
+                    
+                    // Validar tamaño individual del archivo (2MB)
+                    if (fileSize > MAX_FILE_SIZE) {
+                        showErrorModal(`El archivo "${file.name}" excede el límite de 2MB por archivo. El tamaño máximo permitido por archivo es de 2MB.`);
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Validar tamaño total (5MB)
+                    const newTotalSize = totalFileSize + fileSize;
+                    if (newTotalSize > MAX_TOTAL_SIZE) {
+                        showErrorModal(`No se puede agregar "${file.name}". El tamaño total excedería el límite de 5MB. El tamaño máximo total permitido es de 5MB.`);
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Validar formato de archivo
+                    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                    if (!allowedTypes.includes(file.type)) {
+                        showErrorModal(`El archivo "${file.name}" no tiene un formato válido. Solo se permiten archivos PDF, JPG, PNG, DOC, DOCX.`);
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Agregar archivo al total
+                    totalFileSize += fileSize;
+                    fileData.set(this.name, { name: file.name, size: fileSize });
+                    
+                    // Actualizar UI
+                    fileName.textContent = file.name;
                     status.classList.add('selected');
                     button.innerHTML = '<i class="fas fa-check"></i> Archivo seleccionado';
                     button.style.background = 'var(--success-color)';
+                    removeBtn.style.display = 'flex';
+                    
+                    // Actualizar barra de progreso
+                    updateProgressBar();
+                    
                 } else {
-                    status.textContent = 'No se ha seleccionado ningún archivo';
-                    status.classList.remove('selected');
-                    button.innerHTML = '<i class="fas fa-upload"></i> Seleccionar archivo';
-                    button.style.background = 'var(--primary-color)';
+                    removeFile(this);
                 }
             });
         });
@@ -1227,7 +1494,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.addEventListener('DOMContentLoaded', function() {
             const alertElement = document.querySelector('.alert-success');
             const successModal = document.getElementById('successModal');
-            const modalClose = document.getElementById('modalClose');
             const loadingContainer = document.getElementById('loadingContainer');
             
             if (alertElement) {
@@ -1237,7 +1503,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     setTimeout(function() {
                         successModal.style.display = 'flex';
                         
-                        modalClose.addEventListener('click', function() {
+                        // Cerrar modal al hacer clic en cualquier parte
+                        successModal.addEventListener('click', function(e) {
                             successModal.style.display = 'none';
                             loadingContainer.style.display = 'flex';
                             

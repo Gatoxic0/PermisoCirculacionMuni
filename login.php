@@ -437,8 +437,11 @@ if (isset($_SESSION['login_error'])) {
             .login-container {
                 padding: 1rem;
                 max-width: 100%;
+                height: 100vh;
             }
-
+            .login-card {
+                height: 100%;
+            }
             .login-header {
                 padding: 2rem 1.5rem 1.5rem 1.5rem;
             }
@@ -466,6 +469,73 @@ if (isset($_SESSION['login_error'])) {
 
             .floating-element {
                 display: none;
+            }
+        }
+        
+        /* Para pantallas con poca altura */
+        @media (max-height: 700px) {
+            .login-header {
+                padding: 1.5rem 2rem 1rem 2rem;
+            }
+            
+            .municipal-logo {
+                width: 150px;
+                height: 60px;
+                margin-bottom: 1rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .login-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .municipality-name {
+                font-size: 0.8rem;
+            }
+            
+            .login-form {
+                padding: 0 2rem 2rem 2rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1rem;
+            }
+            
+            .login-footer {
+                padding: 1rem 2rem;
+            }
+        }
+        
+        @media (max-height: 600px) {
+            .login-header {
+                padding: 1rem 2rem 0.5rem 2rem;
+            }
+            
+            .municipal-logo {
+                width: 120px;
+                height: 50px;
+                margin-bottom: 0.75rem;
+            }
+            
+            .login-title {
+                font-size: 1.25rem;
+            }
+            
+            .login-form {
+                padding: 0 2rem 1.5rem 2rem;
+            }
+            
+            .form-group {
+                margin-bottom: 0.75rem;
+            }
+            
+            .login-footer {
+                padding: 0.75rem 2rem;
             }
         }
 
