@@ -134,12 +134,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Confirmar transacción
             $pdo->commit();
             
-            // Mensaje de éxito con estilo llamativo
-            $mensaje = '<div class="alert alert-success">
-                            <i class="fas fa-check-circle"></i>
-                            <h3>¡Formulario enviado exitosamente!</h3>
-                            <p>Su solicitud ha sido recibida y está en proceso de revisión.</p>
-                        </div>';
+            // Enviar correo de confirmación al usuario
+            if (!empty($_POST['email'])) {
+                $subject = "Confirmación de Solicitud de Permiso de Circulación";
+                $htmlMessage = "Estimado/a {$_POST['nombre']},<br><br>";
+                $htmlMessage .= "Su solicitud de permiso de circulación ha sido recibida exitosamente.<br><br>";
+                $htmlMessage .= "<strong>Detalles de la solicitud:</strong><br>";
+                $htmlMessage .= "- Patente del vehículo: {$_POST['placa_patente']}<br>";
+                $htmlMessage .= "- Estado: Pendiente de revisión<br>";
+                $htmlMessage .= "- Fecha de solicitud: " . date('d/m/Y H:i') . "<br><br>";
+                $htmlMessage .= "Su solicitud será revisada por nuestro equipo y recibirá una notificación cuando sea procesada.<br><br>";
+                $htmlMessage .= "Si tiene alguna pregunta, puede contactarnos a través de los canales oficiales.<br><br>";
+                $htmlMessage .= "Saludos cordiales,<br>";
+                $htmlMessage .= "Departamento de Permisos de Circulación<br>";
+                $htmlMessage .= "Municipalidad de Melipilla";
+                
+                $correoEnviado = enviarCorreo($_POST['email'], $subject, $htmlMessage);
+                
+                if ($correoEnviado) {
+                    $mensaje = '<div class="alert alert-success">
+                                    <i class="fas fa-check-circle"></i>
+                                    <h3>¡Formulario enviado exitosamente!</h3>
+                                    <p>Su solicitud ha sido recibida y está en proceso de revisión.</p>
+                                    <p><strong>Se ha enviado un correo de confirmación a su dirección de email.</strong></p>
+                                </div>';
+                } else {
+                    $mensaje = '<div class="alert alert-success">
+                                    <i class="fas fa-check-circle"></i>
+                                    <h3>¡Formulario enviado exitosamente!</h3>
+                                    <p>Su solicitud ha sido recibida y está en proceso de revisión.</p>
+                                    <p><strong>Nota:</strong> Hubo un problema al enviar el correo de confirmación, pero su solicitud fue procesada correctamente.</p>
+                                </div>';
+                }
+            } else {
+                $mensaje = '<div class="alert alert-success">
+                                <i class="fas fa-check-circle"></i>
+                                <h3>¡Formulario enviado exitosamente!</h3>
+                                <p>Su solicitud ha sido recibida y está en proceso de revisión.</p>
+                            </div>';
+            }
             
             // Limpiar el formulario después de enviar
             $_POST = array();

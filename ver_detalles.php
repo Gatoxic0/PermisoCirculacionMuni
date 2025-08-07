@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         /* Navigation */
         .navbar {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-            padding: 1rem 0;
+            padding: 0.9rem 0;
             box-shadow: var(--shadow-lg);
             position: sticky;
             top: 0;
@@ -226,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .navbar-container {
-            max-width: 1400px;
+            max-width: 1647px;
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
@@ -245,6 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 180px;
             height: auto;
             filter: brightness(0) invert(1);
+            transition: var(--transition);
         }
 
         .navbar-actions {
@@ -265,12 +266,110 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: 500;
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            white-space: nowrap;
+            font-size: 0.9rem;
         }
 
         .btn-back:hover {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-back:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-back i {
+            font-size: 1rem;
+        }
+
+        /* Responsive styles for the back button */
+        @media (max-width: 768px) {
+            .navbar-container {
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .navbar-logo {
+                width: 150px;
+            }
+            
+            .navbar-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .btn-back {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+                min-width: 140px;
+                justify-content: center;
+            }
+            
+            .btn-back i {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-container {
+                padding: 0.75rem;
+            }
+            
+            .navbar-logo {
+                width: 120px;
+            }
+            
+            .btn-back {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+                min-width: 120px;
+            }
+            
+            .btn-back i {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .navbar-container {
+                padding: 0.5rem;
+            }
+            
+            .navbar-logo {
+                width: 100px;
+            }
+            
+            .btn-back {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+                min-width: 100px;
+                width: 122px;
+            }
+            
+            .btn-back i {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn-back {
+                min-height: 44px; /* Minimum touch target size */
+                padding: 0.75rem 1.5rem;
+            }
+            
+            .btn-back:hover {
+                transform: none;
+            }
+            
+            .btn-back:active {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(0.98);
+            }
         }
 
         /* Main Container */
@@ -539,6 +638,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn-success {
             background: var(--success-color);
             color: white;
+            width: 100%;
         }
 
         .btn-success:hover {

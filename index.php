@@ -175,7 +175,7 @@ try {
         }
 
         .navbar-container {
-            max-width: 1400px;
+            max-width: 1647px;
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
@@ -343,7 +343,7 @@ try {
 
         /* Main Container */
         .main-container {
-            max-width: 1400px;
+            max-width: 1647px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
